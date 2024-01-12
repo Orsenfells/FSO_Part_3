@@ -8,3 +8,5 @@ Full Stack Open Part 3 exercises
 3.7 - adding the morgan middleware for logging
 
 3.9 - Connecting the backend to the frontend from part 2
+
+3.10 - Deploy to the internet using render
