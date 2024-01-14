@@ -1,14 +1,15 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 
-if (process.argv.length<3) {
-    console.log('give password as argument');
-    process.exit(1)
-}
+// if (process.argv.length<3) {
+//     console.log('give password as argument');
+//     process.exit(1)
+// }
 
 const password = process.argv[2]
 const name = process.argv[3]
 const number = process.argv[4]
-const url = `mongodb+srv://Admin:${password}@cluster0.txua3ql.mongodb.net/phonebook?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -27,7 +28,7 @@ const person = new Person({
     number: number
 })
 
-if (process.argv[3] == undefined) {
+if (process.argv[2] == undefined) {
     console.log('phonebook:');
     Person.find({}).then(result => {
     result.forEach(person => {
@@ -37,7 +38,7 @@ if (process.argv[3] == undefined) {
     return
   })
 }else person.save().then(result => {
-    console.log(`addedm ${name} numnber ${number} to phonebook`);
+    console.log(`added ${name} numnber ${number} to phonebook`);
     mongoose.connection.close()
 })
 
