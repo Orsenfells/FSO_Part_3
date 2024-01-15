@@ -13,28 +13,6 @@ app.use(express.static('build'))
 
 
 
-// const Person = mongoose.model('Person', personSchema)
-
-// const person = new Person({
-  
-//     name: name,
-//     number: number
-// })
-
-// if (process.argv[2] == undefined) {
-//     console.log('phonebook:');
-//     Person.find({}).then(result => {
-//     result.forEach(person => {
-//       console.log(`${person.name} ${person.number}`)
-//     })
-//     mongoose.connection.close()
-//     return
-//   })
-// }else person.save().then(result => {
-//     console.log(`added ${name} numnber ${number} to phonebook`);
-//     mongoose.connection.close()
-// })
-
 
 
 let phonebook = [
@@ -62,7 +40,7 @@ let phonebook = [
 let infoResponse = `<p>Phonebook has info for ${phonebook.length} people </p> <br /> ${Date()}`
 let generateId = () => Math.floor(Math.random() * 99999999999999)
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/people', (request, response) => {
     Person.find({}).then(people => {
         response.json(people)
     })
@@ -70,19 +48,20 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
     response.send(infoResponse)
 })
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/people/:id', (request, response) => {
     Person.findById(request.params.id).then(person => {
         response.json(person)
     })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    phonebook = phonebook.filter( person => person.id !== id )
-
-    response.status(204).end()
+app.delete('/api/people/:id', (request, response) => {
+    Person.findByIdAndDelete(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
-app.post('/api/persons', (request, response) => {
+app.post('/api/people', (request, response) => {
     const body = request.body
 
     if(body.name === undefined) {
