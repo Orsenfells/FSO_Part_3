@@ -16,3 +16,7 @@ Full Stack Open Part 3 exercises
 
 3.14 change the backend so that new numbers are saved to the database
      verify that the frontend works
+
+3.15 change the backend so that deleting phonebook entries is reflected in the database
+
+3.16 Move the error handling of the application to a new error handling middleware
