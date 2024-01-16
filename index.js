@@ -17,36 +17,16 @@ const errorHandler = (error, request, response, next) => {
 
     if( error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id'})
+    }   else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message})
     }
 
     next(error)
 }
 
 
-let phonebook = [
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
+
 let infoResponse = `<p>Phonebook has info for ${People.length} people </p> <br /> ${Date()}`
-let generateId = () => Math.floor(Math.random() * 99999999999999)
 
 app.get('/api/people', (request, response) => {
     
@@ -78,7 +58,7 @@ app.delete('/api/people/:id', (request, response) => {
         })
         .catch(error => next(error))
 })
-app.post('/api/people', (request, response) => {
+app.post('/api/people', (request, response, next) => {
     const body = request.body
 
     if(body.name === undefined) {
@@ -90,20 +70,20 @@ app.post('/api/people', (request, response) => {
         number: body.number,
     })
 
-    person.save().then(savedNote => {
+    person.save()
+        .then(savedNote => {
         response.json(savedNote)
-    })
+        })
+        .catch(error => next(error))
 })
 
 app.put('/api/people/:id', (request, response, next) => {
-    const body = request.body
-
-    const person = {
-        name: body.name,
-        number: body.number,
-    }
-console.log('test');
-    People.findByIdAndUpdate(request.params.id, person, { new: true} )
+    const { name, number } = request.body
+    People.findByIdAndUpdate(
+            request.params.id,
+            {name, number},
+            { new: true, runValidators: true, context: 'query'}
+            )
     .then(updatedPerson => {
         response.json(updatedPerson)
     })
