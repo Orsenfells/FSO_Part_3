@@ -1,22 +1,3 @@
-Full Stack Open Part 3 exercises
+Phonebook project that incorporates React, Node, and MongoDB. It is hosted on Render.
 
-3.1 - Implement a Node application that returns a hardcoded list of phonebook entries from the address http://localhost:3001/api/persons
- - Using express to make interfacing with the backend easier
- - using nodemon to automatically restart the app when files are changed
-
-
-3.7 - adding the morgan middleware for logging
-
-3.9 - Connecting the backend to the frontend from part 2
-
-3.10 - Deploy to the internet using render
-
-3.13 fetch all phonebook entries from the database
-     Verify the frontend works after changes are made
-
-3.14 change the backend so that new numbers are saved to the database
-     verify that the frontend works
-
-3.15 change the backend so that deleting phonebook entries is reflected in the database
-
-3.16 Move the error handling of the application to a new error handling middleware
+https://phonebook-toio.onrender.com/
